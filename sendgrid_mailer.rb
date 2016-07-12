@@ -26,7 +26,5 @@ post '/' do
       :domain               => "heroku.com" # the HELO domain provided by the client to the server
     }
   })
-
-  redirect ENV['REDIRECT_URL']
+  redirect ENV['POST_REDIRECT_URL']
 end
-http://devinhalladay.com/contact#success
