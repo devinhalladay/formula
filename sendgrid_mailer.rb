@@ -1,9 +1,8 @@
 require 'sinatra'
 require 'pony'
 
-# ENV['ORIGIN_DOMAIN'] should be formatted as http://domain.extension/
-origin_domain = ENV['ORIGIN_DOMAIN']
-set :protection, :origin_whitelist => origin_domain
+origin_domain = ENV['ORIGIN_DOMAIN'] # ENV['ORIGIN_DOMAIN'] should be formatted as http://domain.extension/
+set :protection, :origin_whitelist => origin_domain # Only allow POST from specified origins. You may specify multiple whitelisted domains by separating domains in ENV['ORIGIN_DOMAIN'] by commas.
 
 get '/' do
   redirect ENV['GET_REDIRECT_URL']
@@ -13,7 +12,7 @@ post '/' do
   Pony.mail({
     :from => params[:email],
     :to => ENV['RECIPIENT_EMAIL_ADDRESS'],
-    :subject => "New inquiry from #{params[:name]}",
+    :subject => "New email from your static form!",
     :body => erb(:email),
     :via => :smtp,
     :via_options => {
@@ -26,5 +25,5 @@ post '/' do
       :domain               => "heroku.com" # the HELO domain provided by the client to the server
     }
   })
-  redirect ENV['POST_REDIRECT_URL']
+  redirect ENV['POST_REDIRECT_URL'] # ENV['POST_REDIRECT_URL'] should be formatted as http://domain.extension/
 end
