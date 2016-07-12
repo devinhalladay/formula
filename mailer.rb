@@ -38,43 +38,56 @@ get '/' do
 end
 
 post '/' do
+  # Allow origin
+  response['Access-Control-Allow-Origin'] = ENV['ORIGIN_DOMAIN']
   return jsonp
 
+  # Initialize errors hash
   @errors = {}
+  # Initialize data hash
+  @data = {}
+  # Set failure fallback to false
   @failure = false
 
   # These are just sample validations; feel free to add your own.
 
   if !valid_field?(params[:name])
-    # Add this param to the errors hash
-    @errors[:name] = true
-    # Set @failure = true for the mailer action conditional below.
-    @failure = true
+    # Set the error for the field name="name" to an error warning string.
+    @errors[:name] = 'Name is required.'
   end
 
   if !valid_field?(params[:email])
-    @errors[:email] = true
-    @failure = true
+    @errors[:email] = 'Email is required.'
   end
 
   if !valid_field?(params[:message])
-    @errors[:message] = true
-    @failure = true
+    @errors[:message] = 'Message is required.'
   end
 
-  if @failure
-    # If @failure is true, return @errors in the AJAX json response.
-    return jsonp @errors
+  # Return a response
+
+  # If there are errors
+  if !@errors.empty?
+    # Sets the success param to false
+    @data[:success] = false
+    # Sets tje errors param equal to the @errors hash
+    @data[:errors] = @errors
+
+  # If there are no errors
   else
-    # If @faliure is false, send the email.
+    # Send the email!
     Pony.mail({
       :from => params[:email],
       :to => ENV['RECIPIENT_EMAIL_ADDRESS'],
-      :subject => "New email from your static form!",
+      :subject => "New inquiry from #{params[:name]}",
       :body => erb(:email)
     })
-  end
 
-  # Return the json response via AJAX
-  return jsonp true
+    # Set the success param to true
+    @data[:success] = true
+    # Set the message param to a string
+    @data[:message] = 'Success!'
+  end
+  # Return the full @data hash to JSON
+  JSONP @data
 end
