@@ -25,4 +25,6 @@ post '/' do
       :enable_starttls_auto => true
     }
   })
+
+  redirect 'http://devinhalladay.com/contact#success'
 end
