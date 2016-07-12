@@ -21,7 +21,7 @@ post '/' do
       :user_name      => ENV['SENDGRID_USERNAME'],
       :password       => ENV['SENDGRID_PASSWORD'],
       :authentication => :plain, # :plain, :login, :cram_md5, no auth by default
-      :domain         => "heroku.com" # the HELO domain provided by the client to the server
+      :domain         => "heroku.com", # the HELO domain provided by the client to the server
       :enable_starttls_auto => true
     }
   })
