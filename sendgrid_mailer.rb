@@ -11,9 +11,9 @@ end
 post '/' do
   Pony.mail({
     :to => ENV['recipient'],
-    :from => 'noreply@example.com',
-    :subject => 'New Contact Form',
-    :body => 'test',
+    :from => params[:email],
+    :subject => 'New inquiry from #{params[:name]}',
+    :body => erb(:email),
     :via => :smtp,
     :via_options => {
       :address        => 'smtp.sendgrid.net',
