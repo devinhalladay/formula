@@ -27,7 +27,6 @@ Alright, let's get your form and endpoint up and running.
   <input type="submit">
 </form>
 ```
-10. Profit
 
 ## Environment variables
 There are a few environment variables you'll need to set to get up and running. You can set them with `heroku config:set VAR_NAME="value"`
