@@ -5,7 +5,7 @@ origin_domain = ENV['origin_domain']
 set :protection, :origin_whitelist => origin_domain
 
 get '/' do
-  'Instead of looking at my form endpoint, why don\'t you go <a href="http://devinhalladay.com/contact">send me an email</a> instead?'
+  redirect 'http://devinhalladay.com/contact'
 end
 
 post '/' do
