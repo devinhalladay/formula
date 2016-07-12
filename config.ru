@@ -1,5 +1,5 @@
 # Require my mail script
-require './sendgrid_mailer'
+require './mailer'
 
 # Run the sinatra application
 run Sinatra::Application
