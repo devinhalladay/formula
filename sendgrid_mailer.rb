@@ -12,7 +12,7 @@ post '/' do
   Pony.mail({
     :to => ENV['recipient'],
     :from => params[:email],
-    :subject => 'New inquiry from #{params[:name]}',
+    :subject => "New inquiry from #{params[:name]}",
     :body => erb(:email),
     :via => :smtp,
     :via_options => {
