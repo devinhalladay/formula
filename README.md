@@ -1,4 +1,4 @@
-# middleman-contact
+# formula
 
 **A tiny Sinatra form endpoint for receiving POST requests from a form in a static site.**
 
