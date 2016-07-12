@@ -1,5 +1,12 @@
 require 'sinatra'
+require 'sinatra/jsonp'
 require 'pony'
+
+before do
+  content_type :json
+  headers 'Access-Control-Allow-Origin' => ENV['ORIGIN_DOMAIN'],
+          'Access-Control-Allow-Methods' => ['POST GET']
+end
 
 origin_domain = ENV['ORIGIN_DOMAIN']
 set :protection, :origin_whitelist => origin_domain # Only allow POST from specified origins.
