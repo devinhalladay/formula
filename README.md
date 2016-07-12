@@ -21,7 +21,7 @@ Alright, let's get your form and endpoint up and running.
 9. Set your form to `POST` to your new endpoint!
 ```html
 <form action="http://appname.herokuapp.com/" method="POST">
-  <input type="text" name="fname">
+  <input type="text" name="name">
   <input type="email" name="email">
   <textarea name="message"></textarea>
   <input type="submit">
@@ -40,6 +40,9 @@ There are a few environment variables you'll need to set to get up and running. 
 
 ## Roadmap
 Eventually I plan on building this out into an equally simple plug-and-play form endpoint service so all you need to do is sign up, configure your endpoint options, and have it up and running without touching any backend code or Heroku nonsense. If you want to help with this, feel free to Tweet me or just submit a pull request.
+
+[x] Server-side validation
+[x] AJAX json responses
 
 ## Contributing
 If you want to help out with development or you have a feature request, please follow these instructions:
