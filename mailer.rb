@@ -3,13 +3,15 @@ require 'sinatra/jsonp'
 require 'pony'
 
 before do
+  # Set document content_type to json
   content_type :json
-  headers 'Access-Control-Allow-Origin' => ENV['ORIGIN_DOMAIN'],
-          'Access-Control-Allow-Methods' => ['POST GET']
+  headers 'Access-Control-Allow-Origin' => ENV['ORIGIN_DOMAIN'], # Allow access from ORIGIN_DOMAIN
+          'Access-Control-Allow-Methods' => ['POST GET'] # Allow POST and GET from origin.
 end
 
+# Only allow requests from specified origins.
 origin_domain = ENV['ORIGIN_DOMAIN']
-set :protection, :origin_whitelist => origin_domain # Only allow POST from specified origins.
+set :protection, :origin_whitelist => origin_domain
 
 Pony.options = {
   :via => :smtp,
@@ -25,17 +27,9 @@ Pony.options = {
 }
 
 helpers do
-  def valid_name?(name)
-    true if name && !name.empty?
-  end
-
-  def valid_email?(email)
-    email_match = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}/
-    true if email && !(email =~ email_match).nil?
-  end
-
-  def valid_message?(message)
-    true if message && !message.empty?
+  # Checks if a field's value exists and is not empty.
+  def valid_field?(field_name)
+    true if field_name && !field_name.empty?
   end
 end
 
@@ -49,32 +43,38 @@ post '/' do
   @errors = {}
   @failure = false
 
-  if !valid_name?(params[:name])
+  # These are just sample validations; feel free to add your own.
+
+  if !valid_field?(params[:name])
+    # Add this param to the errors hash
     @errors[:name] = true
+    # Set @failure = true for the mailer action conditional below.
     @failure = true
   end
 
-  if !valid_email?(params[:email])
+  if !valid_field?(params[:email])
     @errors[:email] = true
     @failure = true
   end
 
-  if !valid_message?(params[:message])
+  if !valid_field?(params[:message])
     @errors[:message] = true
     @failure = true
   end
 
   if @failure
+    # If @failure is true, return @errors in the AJAX json response.
     return jsonp @errors
   else
+    # If @faliure is false, send the email.
     Pony.mail({
       :from => params[:email],
       :to => ENV['RECIPIENT_EMAIL_ADDRESS'],
       :subject => "New email from your static form!",
       :body => erb(:email)
     })
-    redirect ENV['POST_REDIRECT_URL']
   end
 
+  # Return the json response via AJAX
   return jsonp true
 end
